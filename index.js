@@ -4,7 +4,7 @@ import {
 import R from 'ramda'
 import koa from 'koa'
 
-const MIDDLEWARES = ['db', 'general']
+const MIDDLEWARES = ['db', 'general', 'router']
 
 const useMiddlewares = (app) => {
 	R.map(
