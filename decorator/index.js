@@ -3,6 +3,7 @@ import {
 } from 'path'
 import KoaRouter from 'koa-router'
 import R from 'ramda'
+import glob from 'glob'
 
 const pathPrefix = Symbol('pathPrefix')
 const routeMap = []
@@ -20,9 +21,10 @@ export class Route {
 			router,
 			routesPath
 		} = this
-
-		require(resolve(routesPath, './data.js'))
-
+		const files = glob.sync(routesPath + '/*.js')
+		files.forEach((i) => {
+			require(i)
+		})
 		R.forEach(
 			({
 				target,
@@ -31,22 +33,27 @@ export class Route {
 				callback
 			}) => {
 				const prefix = target[pathPrefix]
-				router[method](prefix + path, ...callback)
+				console.log('path', prefix + path)
+				router[method](prefix + path, callback)
 			}
 		)(routeMap)
+
+		console.log(routeMap)
 
 		app.use(router.routes())
 		app.use(router.allowedMethods())
 	}
 }
 
-export const Controller = path => target => (target.prototype[pathPrefix] = path)
+export const Controller = path => target => {
+	target.prototype[pathPrefix] = path
+}
 
 export const setRouter = method => path => (target, key, descriptor) => {
 	routeMap.push({
 		target,
 		method,
-		path: path,
+		path,
 		callback: target[key]
 	})
 	return descriptor

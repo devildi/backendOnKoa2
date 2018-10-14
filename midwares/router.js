@@ -4,7 +4,7 @@ import {
 
 import {
 	Route
-} from '../decorator'
+} from '../decorator/index'
 
 export const router = (app) => {
 	const routesPath = resolve(__dirname, '../routes')
