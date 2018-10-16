@@ -33,12 +33,9 @@ export class Route {
 				callback
 			}) => {
 				const prefix = target[pathPrefix]
-				console.log('path', prefix + path)
 				router[method](prefix + path, callback)
 			}
 		)(routeMap)
-
-		console.log(routeMap)
 
 		app.use(router.routes())
 		app.use(router.allowedMethods())

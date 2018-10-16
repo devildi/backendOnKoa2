@@ -2,6 +2,7 @@
   "presets": ["es2015"],
   "plugins": [
 		["transform-decorators-legacy"],
-		["transform-runtime",{"polifill": false, "regenerator": true}]
+		["transform-runtime",{"polifill": false, "regenerator": true}],
+		["transform-object-rest-spread"]
   ]
 }
