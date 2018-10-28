@@ -6,7 +6,10 @@ import {
 } from '../decorator/index'
 import util from 'util'
 
-import { walk, promiseFS} from '../tools'
+import {
+	walk,
+	promiseFS
+} from '../tools'
 
 @Controller('/mooc')
 export default class DataFatch {
@@ -14,20 +17,20 @@ export default class DataFatch {
 	async getData(ctx, next) {
 		const exist = await util.promisify(fs.exists)(path.join(__dirname, '../data.txt'))
 		let data = null
-		if(exist){
+		if (exist) {
 			console.log('数据文件存在！')
 			data = await promiseFS('data.txt')
-		} else{
+		} else {
 			console.log('数据文件不存在！')
 			data = walk('/Volumes/WOODY/0992、Koa2框架从0开始构建预告片网站')
-			try{
-				fs.writeFile(path.join(__dirname, '../data.txt'),JSON.stringify(data),function (err) {
-					if(err){
+			try {
+				fs.writeFile(path.join(__dirname, '../data.txt'), JSON.stringify(data), function(err) {
+					if (err) {
 						console.log(err)
 					}
 					console.log('数据文件写入成功！')
 				})
-			}catch(err){
+			} catch (err) {
 				console.log(err)
 			}
 		}
