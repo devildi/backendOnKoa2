@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import mongoose from 'mongoose'
+import moment from 'moment'
 const Meal = mongoose.model('Meal')
 
 import {
@@ -35,17 +36,18 @@ const convert = (string) => {
 export default class MealAndHealth {
 	@setRouter('post')('/item')
 	async postData(ctx, next) {
+		let date = moment().format('YYYY-MM-DD')
 		let meal = null
 		const arr = ctx.request.body.arr
 		let itemName = convert(arr[0].name)
 		arr.splice(0, 1)
-		meal = await Meal.findOne({})
+		meal = await Meal.findOne({createdAt: date})
 		if (meal) {
 			meal[itemName] = arr
 			meal = await meal.save()
-			console.log(meal)
 		} else {
 			meal = new Meal({
+				createdAt: date,
 				breakfast: arr
 			})
 			meal = await meal.save()
@@ -57,7 +59,14 @@ export default class MealAndHealth {
 	}
 	@setRouter('get')('/item')
 	async getData(ctx, next) {
-		let meal = await Meal.findOne({})
+		let date = null
+		let rawDate = ctx.query.date
+		if(!rawDate){
+			date = moment().format('YYYY-MM-DD')
+		} else {
+			date = rawDate
+		}
+		let meal = await Meal.findOne({createdAt: date})
 		ctx.body = {
 			data: meal,
 			success: true

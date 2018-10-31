@@ -3,22 +3,12 @@ const Schema = mongoose.Schema
 const Mixed = Schema.Types.Mixed
 
 const MealSchema = new mongoose.Schema({
+  createdAt: String,
   breakfast: [],
   lunch: [],
   supper: [],
   dessert: [],
-  status: [],
-  exercise: [],
-  meta: {
-    createdAt: {
-      type: Date,
-      default: Date.now()
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now()
-    }
-  }
+  status: []
 })
 
 MealSchema.pre('save', function(next) {
