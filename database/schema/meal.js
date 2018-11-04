@@ -1,8 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Mixed = Schema.Types.Mixed
+//const Mixed = Schema.Types.Mixed
 
 const MealSchema = new mongoose.Schema({
+	//name: {type: String, unique: true},
   createdAt: String,
   breakfast: [],
   lunch: [],

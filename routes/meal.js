@@ -6,14 +6,8 @@ const Meal = mongoose.model('Meal')
 
 import {
 	Controller,
-	setRouter,
+	setRouter
 } from '../decorator/index'
-import util from 'util'
-
-import {
-	walk,
-	promiseFS
-} from '../tools'
 
 const convert = (string) => {
 	switch (string) {
@@ -78,6 +72,7 @@ export default class MealAndHealth {
 	@setRouter('get')('/item')
 	async getData(ctx, next) {
 		let date = null
+		//let name = ctx.query.name
 		let rawDate = ctx.query.date
 		if(!rawDate){
 			date = moment().format('YYYY-MM-DD')
