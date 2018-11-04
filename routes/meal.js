@@ -57,6 +57,24 @@ export default class MealAndHealth {
 			success: true
 		}
 	}
+	@setRouter('post')('/uptateItem')
+	async update(ctx, next){
+		let date = moment().format('YYYY-MM-DD')
+		const obj = ctx.request.body.obj
+		const str = ctx.request.body.str
+		let meal = await Meal.findOne({createdAt: date})
+		meal[convert(str)].map((r, i) => {
+			if(r.name === obj.name){
+				meal[convert(str)].splice(i, 1, obj)
+			}
+		})
+		meal = await meal.save()
+		ctx.body = {
+			data: meal,
+			timeStamp: date,
+			success: true
+		}
+	}
 	@setRouter('get')('/item')
 	async getData(ctx, next) {
 		let date = null
