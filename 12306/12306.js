@@ -1,12 +1,15 @@
 const puppeteer = require('puppeteer')
 const url = 'https://kyfw.12306.cn/otn/leftTicket/init'
-var i
+let from = 'beijing'
+let to = 'shenyang'
+let arrFrom = [...from]
+let arrTo = [...to]
 const sleep = time => new Promise(resolve => {
 	setTimeout(resolve, time)
 })
 
 ;(async() => {
-	console.log('Start!')
+	console.log(`开始爬取${from}到${to}的车次！`)
 
 	const browser = await puppeteer.launch({
 		args: ['--no-sandbox'],
@@ -14,19 +17,31 @@ const sleep = time => new Promise(resolve => {
 	})
 
 	const page = await browser.newPage()
-
 	await page.goto(url, {waitUntil: 'networkidle2'})
 
+	await page.tap('#fromStationText')
+	for (let i = 0; i < arrFrom.length; i++){
+		await page.keyboard.press(arrFrom[i]);
+	}
+	await page.keyboard.press('Enter')
+
+	await page.tap('#toStationText')
+	for (let i = 0; i < arrTo.length; i++){
+		await page.keyboard.press(arrTo[i]);
+	}
+	await page.keyboard.press('Enter')
+	await page.click('#query_ticket')
+	await sleep(5000)
+
+	//const bodyHandle = await page.$('.ticket-info')
+
 	const result = await page.evaluate( () => {
-			document.getElementById("fromStation").value = 'BJP'
-			document.getElementById("toStation").value = 'SYT'
-			document.querySelector(".end").click()
-			document.querySelector("#query_ticket").click()
-			var result = document.querySelectorAll(".train")
+			var result = document.querySelectorAll('.ticket-info > .train')
+
 			return result
 		}
 	)
-	await sleep(10000)
+	//await sleep(3000)
 
 	await page.screenshot({path: 'example.png',fullPage: true})
 
