@@ -12,6 +12,7 @@
     "koa-session": "^5.9.0",
     "moment": "^2.22.2",
     "mongoose": "^5.3.7",
+    "puppeteer": "^1.10.0",
     "ramda": "^0.25.0"
   },
   "devDependencies": {
