@@ -10,7 +10,8 @@
 		"js": "node --harmony"
 	},
 	"watch": [
-		"routes/"
+		"routes/",
+		"12306"
 	],
 	"ext": "js json"
 }

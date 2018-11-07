@@ -9,8 +9,9 @@ const sleep = time => new Promise(resolve => {
 	setTimeout(resolve, time)
 })
 
-;(async() => {
-	console.log(`开始爬取${from}到${to}的车次！`)
+process.on('message', async(str) => {
+	console.log(str)
+	console.log(`~~~~~~开始爬取${from}到${to}的车次~~~~~~`)
 
 	const browser = await puppeteer.launch({
 		args: ['--no-sandbox'],
@@ -37,7 +38,7 @@ const sleep = time => new Promise(resolve => {
 
 	const result = await page.evaluate( () => {
 			var result = []
-			var arr = [...document.querySelectorAll('.ticket-info')]
+			var arr = document.querySelectorAll('.ticket-info')
 			for (let i = 0; i < arr.length; i++){
 				let No = arr[i].querySelector('.train > div > a').innerText
 				let depart = arr[i].querySelector('.cds>.start-t ').innerText
@@ -47,7 +48,6 @@ const sleep = time => new Promise(resolve => {
 			return result
 		}
 	)
-	await page.screenshot({path: 'example.png',fullPage: true})
 
 	browser.close()
 
@@ -63,10 +63,10 @@ const sleep = time => new Promise(resolve => {
 		hasGOrD,
 		overNight
 	}
-	console.log(data)
-	//process.send({result})
-	//process.exit(0)
-})()
+	//console.log(data)
+	process.send(data)
+	process.exit(0)
+})
 
 const filter = (obj, hasGOrD, overNight) => {
 	if(obj.No.startsWith('G') || obj.No.startsWith('D')){
