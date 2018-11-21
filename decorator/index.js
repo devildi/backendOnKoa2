@@ -55,3 +55,26 @@ export const setRouter = method => path => (target, key, descriptor) => {
 	})
 	return descriptor
 }
+
+const convert = middleware => (target, key, descriptor) => {
+  target[key] = R.compose(
+    R.concat(
+      changeToArr(middleware)
+    ),
+    changeToArr
+  )(target[key])
+  return descriptor
+}
+
+export const FindTrain = convert(async (ctx, next) => {
+  if (!ctx.session.user) {
+    return (
+      ctx.body = {
+        success: false,
+        errCode: 401,
+        errMsg: '登陆信息已失效, 请重新登陆'
+      }
+    )
+  }
+  await next()
+})

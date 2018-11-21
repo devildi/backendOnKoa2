@@ -35,7 +35,7 @@ export default class MealAndHealth {
 		const arr = ctx.request.body.arr
 		let itemName = convert(arr[0].name)
 		arr.splice(0, 1)
-		meal = await Meal.findOne({createdAt: date})
+		meal = await Meal.findOne({createdAt: date}).exec()
 		if (meal) {
 			meal[itemName] = arr
 			meal = await meal.save()
@@ -56,7 +56,7 @@ export default class MealAndHealth {
 		let date = moment().format('YYYY-MM-DD')
 		const obj = ctx.request.body.obj
 		const str = ctx.request.body.str
-		let meal = await Meal.findOne({createdAt: date})
+		let meal = await Meal.findOne({createdAt: date}).exec()
 		meal[convert(str)].map((r, i) => {
 			if(r.name === obj.name){
 				meal[convert(str)].splice(i, 1, obj)
@@ -79,7 +79,7 @@ export default class MealAndHealth {
 		} else {
 			date = rawDate
 		}
-		let meal = await Meal.findOne({createdAt: date})
+		let meal = await Meal.findOne({createdAt: date}).exec()
 		ctx.body = {
 			data: meal,
 			success: true

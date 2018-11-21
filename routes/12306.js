@@ -32,15 +32,22 @@ export default class Trailer {
 	    console.log(err)
 	  })
 
-	  child.on('message',async data => {
-	    console.log('子进程传回的数据：',data)
-		  ctx.body = {
+	  child.on('message', data => {
+	    console.log('子进程传回的数据：', data)
+	    ctx.body = {
 				data: data,
 				success: true
 			}
+			console.log(ctx.body)
 	  })
 
-	  child.send('shenyang')
-	  
+	  let arr = ['shenyang', 'shenzhen', 'benxi']
+
+	  // arr.map((i) => {
+	  // 	child.send(['beijing', i])
+	  // })
+	  child.send(['beijing', 'benxi'])
+
+		await next()
 	}
 }

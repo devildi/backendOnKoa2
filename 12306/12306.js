@@ -1,17 +1,14 @@
 const puppeteer = require('puppeteer')
 const url = 'https://kyfw.12306.cn/otn/leftTicket/init'
-let from = 'beijing'
-let to = 'shenyang'
 
-let arrFrom = [...from]
-let arrTo = [...to]
 const sleep = time => new Promise(resolve => {
 	setTimeout(resolve, time)
 })
 
-process.on('message', async(str) => {
-	console.log(str)
-	console.log(`~~~~~~开始爬取${from}到${to}的车次~~~~~~`)
+process.on('message', async(arr) => {
+	let arrFrom = [...arr[0]]
+	let arrTo = [...arr[1]]
+	console.log(`~~~~~~开始爬取${arr[0]}到${arr[1]}的车次~~~~~~`)
 
 	const browser = await puppeteer.launch({
 		args: ['--no-sandbox'],
@@ -58,20 +55,20 @@ process.on('message', async(str) => {
 	})
 	
 	let data = {
-		from,
-		to,
+		from: arr[0],
+		to: arr[1],
 		hasGOrD,
 		overNight
 	}
-	//console.log(data)
 	process.send(data)
-	process.exit(0)
+	//process.exit(0)
 })
 
 const filter = (obj, hasGOrD, overNight) => {
 	if(obj.No.startsWith('G') || obj.No.startsWith('D')){
 		hasGOrD.push(obj.No)
 	}
+	//夕发朝至（17点～9点）
 	if(parseInt(obj.depart.slice(0, 2)) >= 17 &&  parseInt(obj.arrive.slice(0, 2))<= 9){
 		overNight.push(obj.No)
 	}
