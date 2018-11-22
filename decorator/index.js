@@ -8,6 +8,11 @@ import glob from 'glob'
 const pathPrefix = Symbol('pathPrefix')
 const routeMap = []
 
+const changeToArr = R.unless(
+  R.is(Array),
+  R.of
+)
+
 export class Route {
 	constructor(app, routesPath) {
 		this.app = app
@@ -33,7 +38,7 @@ export class Route {
 				callback
 			}) => {
 				const prefix = target[pathPrefix]
-				router[method](prefix + path, callback)
+				router[method](prefix + path, ...callback)
 			}
 		)(routeMap)
 
@@ -51,7 +56,7 @@ export const setRouter = method => path => (target, key, descriptor) => {
 		target,
 		method,
 		path,
-		callback: target[key]
+		callback: changeToArr(target[key])
 	})
 	return descriptor
 }
@@ -67,14 +72,7 @@ const convert = middleware => (target, key, descriptor) => {
 }
 
 export const FindTrain = convert(async (ctx, next) => {
-  if (!ctx.session.user) {
-    return (
-      ctx.body = {
-        success: false,
-        errCode: 401,
-        errMsg: '登陆信息已失效, 请重新登陆'
-      }
-    )
-  }
+  console.log('this is 12306 middleware!')
+  ctx.lib= 6666
   await next()
 })

@@ -4,13 +4,15 @@ import path from 'path'
 import mongoose from 'mongoose'
 import {
 	Controller,
-	setRouter
+	setRouter,
+	FindTrain
 } from '../decorator/index'
 const scriptPath = '../12306/12306'
 
 @Controller('/12306')
 export default class Trailer {
 	@setRouter('get')('/get')
+	@FindTrain
 	async postData(ctx, next) {
 
 		let invoked = false
@@ -41,13 +43,15 @@ export default class Trailer {
 			console.log(ctx.body)
 	  })
 
-	  let arr = ['shenyang', 'shenzhen', 'benxi']
+	  //let arr = ['shenyang', 'shenzhen', 'benxi']
 
 	  // arr.map((i) => {
 	  // 	child.send(['beijing', i])
 	  // })
 	  child.send(['beijing', 'benxi'])
-
-		await next()
+	  ctx.body = {
+			data: ctx.lib,
+			success: true
+		}
 	}
 }
