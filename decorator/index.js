@@ -73,6 +73,5 @@ const convert = middleware => (target, key, descriptor) => {
 
 export const FindTrain = convert(async (ctx, next) => {
   console.log('this is 12306 middleware!')
-  ctx.lib= 6666
   await next()
 })

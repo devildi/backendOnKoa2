@@ -5,10 +5,12 @@ const sleep = time => new Promise(resolve => {
 	setTimeout(resolve, time)
 })
 
-process.on('message', async(arr) => {
+let arr = ['beijing', 'benxi']
+
+;(async() => {
 	let arrFrom = [...arr[0]]
 	let arrTo = [...arr[1]]
-	console.log(`~~~~~~开始爬取${arr[0]}到${arr[1]}的车次~~~~~~`)
+	//console.log(`~~~~~~开始爬取${arr[0]}到${arr[1]}的车次~~~~~~`)
 
 	const browser = await puppeteer.launch({
 		args: ['--no-sandbox'],
@@ -60,9 +62,10 @@ process.on('message', async(arr) => {
 		hasGOrD,
 		overNight
 	}
-	process.send(data)
+	//process.send(data)
+	console.log(JSON.stringify(data))
 	process.exit(0)
-})
+})()
 
 const filter = (obj, hasGOrD, overNight) => {
 	if(obj.No.startsWith('G') || obj.No.startsWith('D')){
