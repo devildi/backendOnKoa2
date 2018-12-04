@@ -1,11 +1,13 @@
 const puppeteer = require('puppeteer')
 const url = 'https://kyfw.12306.cn/otn/leftTicket/init'
 
+
 const sleep = time => new Promise(resolve => {
 	setTimeout(resolve, time)
 })
 
-let arr = ['beijing', 'benxi']
+//获取命令行参数
+let arr = process.argv.splice(2)
 
 ;(async() => {
 	let arrFrom = [...arr[0]]
@@ -33,7 +35,7 @@ let arr = ['beijing', 'benxi']
 	await page.keyboard.press('Enter')
 
 	await page.click('#date_range>ul>li:nth-child(2)')
-	await sleep(2000)
+	await sleep(5000)
 
 	const result = await page.evaluate( () => {
 			var result = []
