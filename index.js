@@ -20,9 +20,7 @@ const useMiddlewares = (app) => {
 
 async function start() {
 	const app = new koa()
-
 	await useMiddlewares(app)
-
 	const server = app.listen(3000, () => {
 		console.log('start!')
 	})

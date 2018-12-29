@@ -11,6 +11,7 @@
 	},
 	"watch": [
 		"routes/",
+		"midwares/",
 		"12306"
 	],
 	"ext": "js json"
