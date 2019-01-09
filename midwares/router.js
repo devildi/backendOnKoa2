@@ -11,4 +11,6 @@ export const router = (app) => {
 	const instance = new Route(app, routesPath)
 
 	instance.init()
+	
+	
 }

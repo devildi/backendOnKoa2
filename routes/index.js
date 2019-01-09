@@ -3,7 +3,7 @@ import {
 	setRouter
 } from '../decorator/index'
 
-@Controller('/index')
+@Controller('/')
 export default class fitstPage {
 	@setRouter('get')('')
 	async fitstPage(ctx, next) {

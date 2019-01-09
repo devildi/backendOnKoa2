@@ -42,6 +42,13 @@ export class Route {
 			}
 		)(routeMap)
 
+		// app.use(async function(ctx, next){  
+	 //  await next
+		//   if(parseInt(ctx.status) === 404){
+		//      ctx.redirect('/')
+		//   }
+		// })
+
 		app.use(router.routes())
 		app.use(router.allowedMethods())
 	}
