@@ -2,11 +2,14 @@ import {
 	Controller,
 	setRouter
 } from '../decorator/index'
+import mongoose from 'mongoose'
+const Cat = mongoose.model('Cat')
+const Route = mongoose.model('Route')
 
 @Controller('/api/admin')
-export default class fitstPage {
+export default class fitst {
 	@setRouter('post')('/post')
-	async fitstPage(ctx, next) {
+	async post(ctx, next) {
 		let user = ctx.request.body.name
 		let indexOfDay = ctx.request.body.indexOfDay
 	  //解决[object, Object]异常
@@ -72,7 +75,7 @@ export default class fitstPage {
 		}
 	}
 	@setRouter('post')('/save')
-	async fitstPage(ctx, next) {
+	async save(ctx, next) {
 		let route1 = null
 		let route = null
 		let arrs = JSON.parse(ctx.request.body.cache)
@@ -97,8 +100,36 @@ export default class fitstPage {
 		})
 		ctx.body = await Promise.all(Parr1)
 	}
+	@setRouter('get')('/all')
+	async all(ctx, next) {
+		let name = ctx.query.name || ''
+		let data1 = []
+		let promiseContainer = []
+		let a = await Cat.findOne().exec()
+		if(a){
+			a.all.map((row, index) => {
+				if(row === name) {
+					a.all.splice(index, 1)
+				}
+			})
+			a.all.map((r, i) => {
+				promiseContainer.push(Route.find({user: r}))
+			})
+			let data = await Promise.all(promiseContainer)
+			data.map((r) => {
+				data1.push(r[0])
+			})
+			ctx.body = {
+				data: data1
+			}
+		} else{
+			ctx.body = {
+				data: null
+			}
+		}
+	}
 	@setRouter('get')('/get')
-	async fitstPage(ctx, next) {
+	async get(ctx, next) {
 		let name = ctx.query.name
 		let indexOfDay = ctx.query.indexOfDay
 		let from = ctx.query.from || ''
@@ -160,34 +191,6 @@ export default class fitstPage {
 			data1: play2,
 			dinner: dinner,
 			hotel: hotel
-		}
-	}
-	@setRouter('get')('/all')
-	async fitstPage(ctx, next) {
-		let name = ctx.query.name || ''
-		let data1 = []
-		let promiseContainer = []
-		let a = await Cat.findOne().exec()
-		if(a){
-			a.all.map((row, index) => {
-				if(row === name) {
-					a.all.splice(index, 1)
-				}
-			})
-			a.all.map((r, i) => {
-				promiseContainer.push(Route.find({user: r}))
-			})
-			let data = await Promise.all(promiseContainer)
-			data.map((r) => {
-				data1.push(r[0])
-			})
-			ctx.body = {
-				data: data1
-			}
-		} else{
-			ctx.body = {
-				data: null
-			}
 		}
 	}
 }
