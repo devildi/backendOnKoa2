@@ -21,6 +21,14 @@ const useMiddlewares = (app) => {
 async function start() {
 	const app = new koa()
 	await useMiddlewares(app)
+	//404
+	app.use(async function(ctx, next){  
+  	await next
+	  if(parseInt(ctx.status) === 404){
+	     ctx.redirect('/')
+	  }
+	})
+	
 	const server = app.listen(3000, () => {
 		console.log('start!')
 	})

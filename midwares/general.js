@@ -39,3 +39,12 @@ export const addViews = (app) => {
 export const addServe = (app) => {
 	app.use(serve(join(__dirname , '../views')))
 }
+
+// export const add404 = (app) => {
+// 	app.use(async function(ctx, next){  
+//   	await next
+// 	  // if(parseInt(ctx.status) === 404){
+// 	  //    ctx.redirect('/')
+// 	  // }
+// 	})
+// }
